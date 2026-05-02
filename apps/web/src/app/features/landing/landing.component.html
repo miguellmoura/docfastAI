@@ -1,0 +1,399 @@
+<!-- Header -->
+<header
+  class="px-5 sm:px-8 py-5 flex items-center justify-between max-w-6xl mx-auto"
+>
+  <a href="/" class="flex items-center gap-2.5">
+    <span
+      class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 shadow-soft"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        class="h-5 w-5 text-white"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.4"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+        <path d="M14 3v5h5" />
+        <path d="M9 13h6M9 17h4" />
+      </svg>
+    </span>
+    <span class="text-lg font-bold tracking-tight">
+      DocFast<span class="text-brand-600">AI</span>
+    </span>
+  </a>
+  <nav class="hidden sm:flex items-center gap-1">
+    <a href="#como-funciona" class="btn-ghost">Como funciona</a>
+    <a href="#precos" class="btn-ghost">Preços</a>
+  </nav>
+</header>
+
+<main class="px-5 sm:px-8">
+  <!-- Hero -->
+  <section class="max-w-3xl mx-auto pt-6 sm:pt-12 pb-10 text-center">
+    <span class="badge mb-5">
+      <svg viewBox="0 0 24 24" class="h-3.5 w-3.5" fill="currentColor">
+        <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" />
+      </svg>
+      Pronto em menos de 10 segundos
+    </span>
+
+    <h1
+      class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.05]"
+    >
+      Resuma PDFs e
+      <span
+        class="bg-gradient-to-r from-brand-600 to-brand-400 bg-clip-text text-transparent"
+      >
+        extraia texto de imagens
+      </span>
+      em segundos.
+    </h1>
+    <p class="mt-5 text-lg text-ink-700 max-w-xl mx-auto">
+      Envie seu arquivo, receba o que importa. Sem cadastro, sem complicação.
+      Pague com PIX só se quiser usar mais.
+    </p>
+  </section>
+
+  <!-- Upload card -->
+  <section class="max-w-2xl mx-auto pb-12">
+    <!-- Erro global -->
+    @if (error) {
+      <div class="card p-4 mb-4 bg-red-50 border-red-200">
+        <div class="flex gap-3">
+          <svg
+            viewBox="0 0 24 24"
+            class="h-5 w-5 text-red-600 shrink-0"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          <p class="text-sm text-red-900">{{ error }}</p>
+        </div>
+      </div>
+    }
+
+    @if (!fileName()) {
+      <label
+        class="card block cursor-pointer p-8 sm:p-12 text-center transition hover:border-brand-300"
+        [class.ring-4]="isDragging()"
+        [class.ring-brand-200]="isDragging()"
+        [class.border-brand-400]="isDragging()"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)"
+      >
+        <input
+          type="file"
+          accept=".pdf,.jpg,.jpeg,.png,.webp"
+          class="hidden"
+          (change)="onSelect($event)"
+        />
+
+        <div
+          class="mx-auto h-16 w-16 rounded-2xl bg-brand-50 flex items-center justify-center mb-4"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            class="h-8 w-8 text-brand-600"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg>
+        </div>
+
+        <p class="text-lg font-semibold">Arraste seu arquivo aqui</p>
+        <p class="text-sm text-ink-500 mt-1">ou clique para escolher</p>
+
+        <div
+          class="mt-6 flex flex-wrap justify-center gap-2 text-xs text-ink-500"
+        >
+          <span class="rounded-full bg-slate-100 px-3 py-1">PDF</span>
+          <span class="rounded-full bg-slate-100 px-3 py-1">JPG</span>
+          <span class="rounded-full bg-slate-100 px-3 py-1">PNG</span>
+          <span class="rounded-full bg-slate-100 px-3 py-1">WEBP</span>
+        </div>
+      </label>
+
+      <p class="text-center text-xs text-ink-500 mt-4">
+        🔒 Seu arquivo é apagado em até 1 hora. Usamos só para gerar seu
+        resultado.
+      </p>
+    } @else if (result()) {
+      <!-- Resultado -->
+      <div class="card p-6 sm:p-8">
+        <div class="flex items-start justify-between mb-6">
+          <div>
+            <h3 class="text-lg font-semibold">Resultado pronto!</h3>
+            <p class="text-sm text-ink-500 mt-1">
+              {{ fileName() }} · {{ fileSize() }}
+            </p>
+          </div>
+          <button
+            (click)="reset()"
+            class="text-ink-500 hover:text-ink-900 p-1 rounded-md hover:bg-slate-100"
+            aria-label="Nova análise"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            >
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="prose prose-sm max-w-none">
+          <div
+            class="bg-slate-50 rounded-xl p-4 whitespace-pre-wrap text-sm leading-relaxed"
+          >
+            {{ result()!.result }}
+          </div>
+        </div>
+
+        <div class="mt-6 flex gap-3">
+          <button (click)="copy()" class="btn-primary flex-1">
+            <svg
+              viewBox="0 0 24 24"
+              class="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+              <path
+                d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+              />
+            </svg>
+            {{ copied() ? "Copiado!" : "Copiar" }}
+          </button>
+          <button (click)="reset()" class="btn-ghost border border-slate-200">
+            Nova análise
+          </button>
+        </div>
+
+        <p class="text-xs text-ink-400 mt-4 text-center">
+          {{ result()!.extractedChars }} caracteres extraídos · Custo estimado:
+          R$ {{ result()!.estimatedCostBrl.toFixed(4) }}
+        </p>
+      </div>
+    } @else {
+      <!-- Upload feito, aguardando ação -->
+      <div class="card p-6 sm:p-8">
+        <div class="flex items-start gap-4">
+          <div
+            class="h-12 w-12 rounded-xl bg-brand-50 flex items-center justify-center shrink-0"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              class="h-6 w-6 text-brand-600"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+              />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-semibold truncate">{{ fileName() }}</p>
+            <p class="text-sm text-ink-500">{{ fileSize() }}</p>
+          </div>
+          <button
+            (click)="reset()"
+            [disabled]="isProcessing"
+            class="text-ink-500 hover:text-ink-900 p-1 rounded-md hover:bg-slate-100 disabled:opacity-50"
+            aria-label="Remover arquivo"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            >
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <p class="text-sm text-ink-700 mt-6 mb-3 font-medium">
+          O que você quer fazer?
+        </p>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <button
+            (click)="analyze('SUMMARIZE')"
+            [disabled]="isProcessing"
+            class="btn-primary"
+          >
+            @if (isProcessing) {
+              <svg class="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                />
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                />
+              </svg>
+              Resumindo...
+            } @else {
+              Resumir agora
+            }
+          </button>
+          <button
+            (click)="analyze('EXTRACT_KEY_POINTS')"
+            [disabled]="isProcessing"
+            class="btn-ghost border border-slate-200"
+          >
+            Extrair pontos principais
+          </button>
+        </div>
+      </div>
+    }
+  </section>
+
+  <!-- Como funciona -->
+  <section id="como-funciona" class="max-w-4xl mx-auto py-16">
+    <h2 class="text-center text-3xl font-bold mb-10">Em 3 passos simples</h2>
+    <div class="grid sm:grid-cols-3 gap-6">
+      @for (
+        step of [
+          { n: "1", t: "Envie seu arquivo", d: "PDF ou imagem, até 10 MB." },
+          { n: "2", t: "Aguarde 10 segundos", d: "A IA lê e organiza tudo." },
+          { n: "3", t: "Copie ou baixe", d: "Pronto pra usar onde quiser." },
+        ];
+        track step.n
+      ) {
+        <div class="card p-6">
+          <span
+            class="inline-flex h-9 w-9 rounded-full bg-brand-600 text-white font-bold items-center justify-center mb-4"
+          >
+            {{ step.n }}
+          </span>
+          <h3 class="font-semibold text-lg">{{ step.t }}</h3>
+          <p class="text-ink-500 text-sm mt-1">{{ step.d }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Preços -->
+  <section id="precos" class="max-w-5xl mx-auto py-16">
+    <h2 class="text-center text-3xl font-bold mb-2">
+      Comece grátis. Pague só se gostar.
+    </h2>
+    <p class="text-center text-ink-500 mb-10">
+      Cancele quando quiser. PIX em 1 toque.
+    </p>
+
+    <div class="grid md:grid-cols-3 gap-5">
+      <!-- Light -->
+      <div class="card p-7">
+        <p class="text-sm font-semibold text-ink-500 uppercase tracking-wide">
+          Light
+        </p>
+        <p class="mt-3">
+          <span class="text-4xl font-extrabold">R$9</span>
+          <span class="text-ink-500"> avulso</span>
+        </p>
+        <p class="text-sm text-ink-500 mt-1">15 análises · 90 dias</p>
+        <button class="btn-ghost border border-slate-200 w-full mt-6">
+          Comprar com PIX
+        </button>
+      </div>
+
+      <!-- Pro -->
+      <div class="card p-7 relative ring-2 ring-brand-600 shadow-lift">
+        <span
+          class="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-600 text-white text-xs font-bold px-3 py-1 rounded-full"
+        >
+          MAIS POPULAR
+        </span>
+        <p class="text-sm font-semibold text-brand-700 uppercase tracking-wide">
+          Pro
+        </p>
+        <p class="mt-3">
+          <span class="text-4xl font-extrabold">R$19</span>
+          <span class="text-ink-500"> /mês</span>
+        </p>
+        <p class="text-sm text-ink-500 mt-1">80 análises · PDFs até 100 págs</p>
+        <button class="btn-primary w-full mt-6">Assinar agora</button>
+      </div>
+
+      <!-- Power -->
+      <div class="card p-7">
+        <p class="text-sm font-semibold text-ink-500 uppercase tracking-wide">
+          Power
+        </p>
+        <p class="mt-3">
+          <span class="text-4xl font-extrabold">R$39</span>
+          <span class="text-ink-500"> /mês</span>
+        </p>
+        <p class="text-sm text-ink-500 mt-1">
+          300 análises · PDFs até 200 págs
+        </p>
+        <button class="btn-ghost border border-slate-200 w-full mt-6">
+          Assinar agora
+        </button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="border-t border-slate-100 mt-10">
+  <div
+    class="max-w-6xl mx-auto px-5 sm:px-8 py-6 text-sm text-ink-500 flex flex-col sm:flex-row gap-2 sm:justify-between"
+  >
+    <p>© 2026 DocFast AI</p>
+    <div class="flex gap-4">
+      <a href="#" class="hover:text-ink-900">Privacidade</a>
+      <a href="#" class="hover:text-ink-900">Termos</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Smart Gate: e-mail antes da 2ª análise -->
+@if (showEmailGate()) {
+  <app-email-gate-modal
+    (closed)="onEmailGateClosed()"
+    (confirmed)="onEmailConfirmed()"
+  />
+}
+
+<!-- Smart Gate: paywall antes da 3ª -->
+@if (showPaywall()) {
+  <app-paywall-modal
+    [email]="gate.email() || ''"
+    (closed)="onPaywallClosed()"
+  />
+}

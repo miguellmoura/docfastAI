@@ -1,0 +1,48 @@
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/docfast}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  
+  h2:
+    console:
+      enabled: false
+
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: always
+    include-binding-errors: never
+    include-stacktrace: never
+
+app:
+  openai:
+    api-key: ${OPENAI_API_KEY}
+    model: gpt-4o-mini
+    max-tokens: 1500
+    temperature: 0.3
+  
+  mercadopago:
+    access-token: ${MERCADOPAGO_ACCESS_TOKEN}
+    webhook-secret: ${MERCADOPAGO_WEBHOOK_SECRET:}
+  
+  frontend:
+    url: ${FRONTEND_URL:https://docfast.ai}
+  
+  cors:
+    allowed-origin: ${CORS_ALLOWED_ORIGIN:https://docfast.ai}
+
+logging:
+  level:
+    root: INFO
+    com.docfast: INFO

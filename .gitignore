@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+target/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+dist/
+build/
+*.log
+
+# Spring Boot
+.mvn/wrapper/maven-wrapper.jar
+apps/api/target*/

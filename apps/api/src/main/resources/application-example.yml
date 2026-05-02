@@ -1,0 +1,22 @@
+# Copie este arquivo para application.yml e ajuste as variáveis de ambiente
+# Ou use .env no mesmo diretório que o JAR em produção
+
+spring:
+  application:
+    name: docfast-api
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+
+app:
+  openai:
+    api-key: ${OPENAI_API_KEY}
+  cors:
+    allowed-origin: ${CORS_ALLOWED_ORIGIN}
